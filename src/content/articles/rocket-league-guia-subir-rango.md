@@ -52,6 +52,11 @@ Ajustes de cámara recomendados como punto de partida:
 
 No hace falta copiar exactamente los ajustes de un profesional. Lo importante es tener una cámara amplia, cómoda y estable para ver bien el balón, los rivales y tus compañeros.
 
+<figure>
+  <img src="/images/rocket-league-guia-para-subir-de-rango.png" alt="Portada de Rocket League con consejos para subir de rango" loading="lazy">
+  <figcaption>Antes de entrenar mecanicas avanzadas, ajusta camara, controles y rutinas basicas para jugar con mas consistencia.</figcaption>
+</figure>
+
 ## Qué debes mejorar primero
 
 Si quieres subir de rango rápido, no intentes aprender todas las mecánicas a la vez. Rocket League premia mucho más la consistencia que las jugadas espectaculares.

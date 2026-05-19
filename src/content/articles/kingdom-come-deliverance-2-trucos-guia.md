@@ -64,6 +64,11 @@ En esta guía encontrarás ambos tipos:
 
 Si juegas en PlayStation 5 o Xbox Series X|S, céntrate sobre todo en los trucos normales, porque los comandos de consola son una función exclusiva de PC.
 
+<figure>
+  <img src="/images/kingdom-come-deliverance-2-trucos-guia.png" alt="Guia visual de Kingdom Come Deliverance 2 con consejos para empezar fuerte" loading="lazy">
+  <figcaption>Usa la guia como una hoja de ruta: primero seguridad, despues dinero y por ultimo mejoras de combate.</figcaption>
+</figure>
+
 ## Trucos rápidos para empezar bien
 
 Si acabas de empezar Kingdom Come Deliverance 2, estas son las primeras reglas que debes tener claras:

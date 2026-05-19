@@ -722,6 +722,32 @@ svg {
   margin: 0 0 18px;
 }
 
+.article-body img {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  margin: 28px 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  object-fit: cover;
+  box-shadow: var(--shadow);
+}
+
+.article-body figure {
+  margin: 30px 0;
+}
+
+.article-body figure img {
+  margin: 0;
+}
+
+.article-body figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
 .article-body li + li {
   margin-top: 8px;
 }

@@ -73,6 +73,11 @@ Los cambios más destacados son:
 
 Para jugadores casuales, la actualización puede parecer una simple mejora de calidad de vida. Para jugadores ranked, entrenadores y creadores de contenido, estos cambios son mucho más importantes.
 
+<figure>
+  <img src="/images/rocket-league-temporada-22-cambios-mmr-anticheat.png" alt="Resumen visual de Rocket League Temporada 22 con MMR visible y Easy Anti-Cheat" loading="lazy">
+  <figcaption>La Temporada 22 mejora la lectura competitiva: mas informacion visible, mas control en entrenamientos y mas seguridad online.</figcaption>
+</figure>
+
 ## MMR visible: el cambio que muchos jugadores esperaban
 
 Uno de los cambios más importantes es la posibilidad de ver el MMR en las listas competitivas. El MMR, o Matchmaking Rating, es el valor interno que usa el juego para emparejarte con jugadores de nivel similar.

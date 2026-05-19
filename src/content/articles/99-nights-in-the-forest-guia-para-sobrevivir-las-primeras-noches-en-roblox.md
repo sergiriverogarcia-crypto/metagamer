@@ -34,6 +34,11 @@ Aunque al principio parece un juego fácil, muchos jugadores pierden pronto porq
 
 En esta guía vas a ver qué hacer en tus primeras partidas para aguantar más noches y jugar con más cabeza.
 
+<figure>
+  <img src="/images/sobrevivir-99-noches-roblox.png" alt="Campamento de 99 Nights in the Forest con jugadores preparando la noche" loading="lazy">
+  <figcaption>La prioridad en las primeras partidas es mantener una zona segura antes de explorar demasiado lejos.</figcaption>
+</figure>
+
 ## Qué debes hacer al empezar
 
 Lo primero no es correr por el mapa sin rumbo. Antes de explorar demasiado, céntrate en asegurar tu zona inicial.

@@ -86,7 +86,7 @@ svg {
 
 .brand-logo {
   display: block;
-  width: clamp(168px, 18vw, 232px);
+  width: clamp(176px, 18vw, 242px);
   height: auto;
 }
 

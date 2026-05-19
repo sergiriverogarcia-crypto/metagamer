@@ -1,18 +1,31 @@
 ---
 title: "99 Nights in the Forest: guía para sobrevivir las primeras noches en Roblox"
-description: "Guía rápida de 99 Nights in the Forest en Roblox: qué hacer al empezar, cómo sobrevivir de noche, conseguir recursos y evitar errores de principiante."
-slug: "99-nights-in-the-forest-guia-para-sobrevivir-las-primeras-noches-en-roblox"
-category: "guias"
-game: "Roblox"
-platforms: ["PC", "móvil", "tablet", "Xbox", "PlayStation"]
+description: "Guía rápida de 99 Nights in the Forest en Roblox: qué hacer al
+  empezar, cómo sobrevivir de noche, conseguir recursos y evitar errores de
+  principiante."
+slug: 99-nights-in-the-forest-guia-para-sobrevivir-las-primeras-noches-en-roblox
+category: guias
+game: Roblox
+platforms:
+  - PC
+  - móvil
+  - tablet
+  - Xbox
+  - PlayStation
 date: 2026-05-19
 updated: 2026-05-19
-author: "Equipo MetaGamer"
-cover: "/images/sobrevivir-99-noches-roblox.png"
-tags: ["roblox", "99 nights in the forest", "supervivencia", "terror", "guia", "principiantes", "the deer"]
-readingTime: "6 min"
+author: Equipo MetaGamer
+cover: /images/sobrevivir-99-noches-roblox-1.png
+tags:
+  - roblox
+  - 99 nights in the forest
+  - supervivencia
+  - terror
+  - guia
+  - principiantes
+  - the deer
+readingTime: 6 min
 ---
-
 ## Punto de partida
 
 99 Nights in the Forest es uno de los juegos de Roblox que más está llamando la atención por mezclar supervivencia, terror y cooperación. La idea principal es sencilla: construir un campamento, explorar el bosque, conseguir recursos y sobrevivir a las amenazas que aparecen durante la noche.

@@ -30,10 +30,12 @@
 html {
   background: var(--bg);
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
   background:
     linear-gradient(180deg, rgba(11, 13, 16, 0.04), transparent 360px),
     var(--paper);
@@ -369,8 +371,10 @@ svg {
 }
 
 .card-media {
+  min-width: 0;
   min-height: 220px;
   background: var(--bg-2);
+  overflow: hidden;
 }
 
 .article-card.featured .card-media {
@@ -380,6 +384,8 @@ svg {
 .cover-art {
   position: relative;
   display: flex;
+  width: 100%;
+  min-width: 0;
   min-height: 100%;
   aspect-ratio: 16 / 10;
   align-items: end;

@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
 
-Sitemap: https://metagamer.example/sitemap.xml
+Sitemap: https://metagamer-github.pages.dev/sitemap.xml

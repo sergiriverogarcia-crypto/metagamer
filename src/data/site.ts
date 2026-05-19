@@ -1,21 +1,21 @@
 export const SITE = {
   name: "MetaGamer",
   description:
-    "Guías, trucos, rankings y ajustes útiles para jugar mejor en PC, PlayStation, Xbox, Switch y móvil.",
-  url: "https://metagamer.example",
+    "Guias, trucos, rankings y ajustes utiles para jugar mejor en PC, PlayStation, Xbox, Switch y movil.",
+  url: "https://metagamer-github.pages.dev",
   author: "Equipo MetaGamer"
 };
 
 export const categories = [
   {
     slug: "guias",
-    name: "Guías",
+    name: "Guias",
     description: "Rutas claras para avanzar, empezar mejor y evitar perder horas."
   },
   {
     slug: "trucos",
     name: "Trucos",
-    description: "Consejos prácticos, atajos seguros y decisiones que mejoran la partida."
+    description: "Consejos practicos, atajos seguros y decisiones que mejoran la partida."
   },
   {
     slug: "rankings",
@@ -24,12 +24,12 @@ export const categories = [
   },
   {
     slug: "configuracion",
-    name: "Configuración",
-    description: "Ajustes de rendimiento, control, gráficos, audio y accesibilidad."
+    name: "Configuracion",
+    description: "Ajustes de rendimiento, control, graficos, audio y accesibilidad."
   },
   {
     slug: "noticias-utiles",
-    name: "Noticias útiles",
+    name: "Noticias utiles",
     description: "Cambios, temporadas y novedades explicadas con impacto real para jugar."
   }
 ] as const;

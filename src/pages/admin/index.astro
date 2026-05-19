@@ -1,1301 +1,191 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { categories } from "@/data/site";
-import { articleSlug, sortByUpdated } from "@/utils/articles";
 
-const articles = sortByUpdated(await getCollection("articles"));
-const categoryMap = new Map(categories.map((category) => [category.slug, category.name]));
-const categoryStats = categories.map((category) => ({
-  ...category,
-  count: articles.filter((article) => article.data.category === category.slug).length
-}));
-const platformStats = articles.reduce<Record<string, number>>((stats, article) => {
-  article.data.platforms.forEach((platform) => {
-    stats[platform] = (stats[platform] ?? 0) + 1;
-  });
-  return stats;
-}, {});
-const gameStats = Object.entries(
-  articles.reduce<Record<string, number>>((stats, article) => {
-    stats[article.data.game] = (stats[article.data.game] ?? 0) + 1;
-    return stats;
-  }, {})
-)
-  .sort((a, b) => b[1] - a[1])
-  .slice(0, 6);
-const latestArticle = articles[0];
-const plannedArticles = Math.max(6, Math.round(articles.length * 0.45));
-const estimatedViews = articles.length * 1240 + Object.keys(platformStats).length * 520;
-const reviewQueue = Math.max(3, categoryStats.filter((category) => category.count < 3).length + 2);
-const dashboardArticles = articles.map((article) => ({
-  title: article.data.title,
-  description: article.data.description,
-  categorySlug: article.data.category,
-  category: categoryMap.get(article.data.category) ?? article.data.category,
-  game: article.data.game,
-  platforms: article.data.platforms,
-  updated: article.data.updated.toISOString().slice(0, 10),
-  slug: articleSlug(article),
-  tags: article.data.tags,
-  cover: article.data.cover,
-  author: article.data.author,
-  readingTime: article.data.readingTime,
-  content: article.body
-}));
+const links = [
+  {
+    title: "Abrir Pages CMS",
+    text: "Crear, editar y borrar articulos con subida de portadas.",
+    href: "https://app.pagescms.org/"
+  },
+  {
+    title: "Repositorio GitHub",
+    text: "Revisar archivos, historial y cambios publicados.",
+    href: "https://github.com/sergiriverogarcia-crypto/metagamer"
+  },
+  {
+    title: "Cloudflare Pages",
+    text: "Ver despliegues, builds y dominio de produccion.",
+    href: "https://dash.cloudflare.com/5876b27415e4e70af2925851e30da505/pages/view/metagamer-github"
+  }
+];
 ---
 
 <BaseLayout
-  title="Admin editorial"
-  description="Panel local de MetaGamer para crear borradores Markdown y revisar metricas editoriales simuladas."
+  title="Admin seguro"
+  description="Acceso editorial seguro de MetaGamer para publicar contenido desde GitHub y Pages CMS."
   canonical="/admin/"
   noindex
 >
-  <section class="admin-shell" data-admin-app>
-    <div class="admin-hero">
-      <div>
-        <p class="eyebrow">MetaGamer Admin local</p>
-        <h1>Centro editorial para preparar articulos bonitos.</h1>
+  <section class="admin-security">
+    <div class="security-inner">
+      <p class="eyebrow">MetaGamer Admin</p>
+      <h1>El editor local esta desactivado en produccion.</h1>
+      <p class="lead">
+        La web publicada es estatica, asi que no debe incluir formularios publicos capaces de simular un panel admin
+        con contrasena en JavaScript. Para publicar de forma segura se usa Pages CMS conectado a GitHub.
+      </p>
+
+      <div class="security-notice" role="note">
+        <strong>Mejora de seguridad aplicada</strong>
         <p>
-          Crea borradores compatibles con la content collection, revisa una preview limpia y consulta metricas
-          editoriales de trabajo sin depender de backend.
+          Esta pagina ya no guarda articulos, no usa <code>localStorage</code>, no expone una clave demo y no ejecuta
+          scripts de administracion en el navegador. El contenido real se controla desde GitHub, donde queda historial
+          y permisos de cuenta.
         </p>
       </div>
-      <div class="status-card">
-        <span>Clave demo</span>
-        <strong>metagamer-demo</strong>
-        <small>Solo validacion visual en cliente.</small>
+
+      <div class="admin-links" aria-label="Accesos de administracion">
+        {links.map((link) => (
+          <a href={link.href} target="_blank" rel="noreferrer">
+            <span>{link.title}</span>
+            <small>{link.text}</small>
+          </a>
+        ))}
       </div>
-    </div>
 
-    <section class="login-panel" data-login-panel>
-      <div>
-        <p class="eyebrow">Acceso privado</p>
-        <h2>Entrar al prototipo</h2>
-        <p>Este bloqueo existe para probar el flujo editorial en local. No protege contenido publicado.</p>
-      </div>
-      <form class="login-form" data-login-form>
-        <label for="admin-password">Contrasena demo</label>
-        <div class="login-row">
-          <input id="admin-password" name="password" type="password" autocomplete="current-password" placeholder="metagamer-demo" />
-          <button type="submit">Entrar</button>
-        </div>
-        <p class="form-message" data-login-message></p>
-      </form>
-    </section>
-
-    <div class="admin-workspace is-locked" data-admin-workspace>
-      <section class="cloud-publish">
-        <div>
-          <p class="eyebrow">Publicar en la nube</p>
-          <h2>El CMS real guarda articulos en GitHub.</h2>
-          <p>
-            Este panel local sirve para preparar y revisar borradores. Para que un articulo aparezca publicado en la web online,
-            conecta el repositorio con Pages CMS: alli podras crear, editar, eliminar articulos y subir portadas a
-            <code>public/images</code>.
-          </p>
-        </div>
-        <div class="cloud-actions">
-          <a href="https://app.pagescms.org/" target="_blank" rel="noreferrer">Abrir Pages CMS</a>
-          <span>Config: <code>.pages.yml</code></span>
-        </div>
-      </section>
-
-      <nav class="admin-tabs" aria-label="Herramientas admin">
-        <button class="is-active" type="button" data-tab-button="editor">Editor</button>
-        <button type="button" data-tab-button="dashboard">Dashboard</button>
-      </nav>
-
-      <section class="tab-panel is-active" data-tab-panel="editor">
-        <div class="editor-grid">
-          <form class="article-form" data-article-form>
-            <div class="form-head">
-              <div>
-                <p class="eyebrow">Nuevo borrador</p>
-                <h2>Generador Markdown</h2>
-              </div>
-              <button class="ghost-button" type="button" data-reset-form>Limpiar</button>
-            </div>
-
-            <label>
-              Titulo
-              <input name="title" value="Guia rapida para dominar el inicio de una partida" maxlength="120" />
-            </label>
-
-            <label>
-              Descripcion SEO
-              <textarea name="description" rows="3" maxlength="180">Consejos claros para empezar mejor, evitar errores comunes y tomar buenas decisiones desde los primeros minutos.</textarea>
-            </label>
-
-            <div class="field-row">
-              <label>
-                Categoria
-                <select name="category">
-                  {categories.map((category) => <option value={category.slug}>{category.name}</option>)}
-                </select>
-              </label>
-              <label>
-                Juego
-                <input name="game" value="Fortnite" />
-              </label>
-            </div>
-
-            <div class="field-row">
-              <label>
-                Plataformas
-                <input name="platforms" value="PC, PlayStation, Xbox, Switch" />
-              </label>
-              <label>
-                Tags
-                <input name="tags" value="guia, consejos, principiantes" />
-              </label>
-            </div>
-
-            <div class="field-row">
-              <label>
-                Cover
-                <input name="cover" value="fortnite" placeholder="hooter.png o /images/hooter.png" />
-              </label>
-              <label>
-                Subir portada
-                <input name="coverFile" type="file" accept="image/png,image/jpeg,image/webp" data-cover-file />
-              </label>
-            </div>
-
-            <div class="field-row">
-              <label>
-                Autor
-                <input name="author" value="Equipo MetaGamer" />
-              </label>
-            </div>
-
-            <label>
-              Contenido
-              <textarea name="content" rows="12">## Punto de partida
-
-- Ajusta sensibilidad, brillo y audio antes de entrar en competitivo.
-- Revisa el mapa para elegir una ruta segura.
-- Guarda recursos para el momento importante, no para impresionar.
-
-## Plan recomendado
-
-Empieza con objetivos pequenos y medibles. Una partida buena no siempre es la que acaba en victoria, sino la que te deja una decision mejor para la siguiente.
-
-## FAQ
-
-### Cuanto tarda en notarse la mejora?
-
-Con una rutina simple, una semana suele bastar para detectar menos errores repetidos.</textarea>
-            </label>
-          </form>
-
-          <aside class="preview-column">
-            <div class="preview-card">
-              <div class="preview-cover is-hidden" data-preview-cover>
-                <img src="" alt="" data-preview-cover-img />
-              </div>
-              <div class="preview-kicker" data-preview-category>Guias</div>
-              <h2 data-preview-title>Guia rapida para dominar el inicio de una partida</h2>
-              <p data-preview-description>
-                Consejos claros para empezar mejor, evitar errores comunes y tomar buenas decisiones desde los primeros minutos.
-              </p>
-              <div class="preview-meta">
-                <span data-preview-game>Fortnite</span>
-                <span data-preview-platforms>PC, PlayStation, Xbox, Switch</span>
-                <span data-preview-reading>4 min</span>
-              </div>
-              <div class="preview-tags" data-preview-tags></div>
-              <div class="preview-body" data-preview-body></div>
-            </div>
-
-            <div class="markdown-card">
-              <div class="markdown-actions">
-                <div>
-                  <p class="eyebrow">Salida</p>
-                  <h3>Markdown generado</h3>
-                </div>
-                <div class="button-row">
-                  <button type="button" data-copy-markdown>Copiar</button>
-                  <button type="button" data-download-markdown>Descargar</button>
-                </div>
-              </div>
-              <textarea readonly rows="14" data-markdown-output></textarea>
-              <p class="form-message" data-output-message></p>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section class="tab-panel" data-tab-panel="dashboard">
-        <div class="metric-grid">
-          <article>
-            <span>Articulos publicados</span>
-            <strong>{articles.length}</strong>
-            <small>Desde content collections</small>
-          </article>
-          <article>
-            <span>Visitas editoriales estimadas</span>
-            <strong>{estimatedViews.toLocaleString("es-ES")}</strong>
-            <small>Simulacion para priorizar temas</small>
-          </article>
-          <article>
-            <span>Borradores sugeridos</span>
-            <strong>{plannedArticles}</strong>
-            <small>Objetivo de cobertura evergreen</small>
-          </article>
-          <article>
-            <span>Cola de revision</span>
-            <strong>{reviewQueue}</strong>
-            <small>Dato local de planificacion</small>
-          </article>
-        </div>
-
-        <div class="dashboard-grid">
-          <section class="panel">
-            <div class="panel-head">
-              <h2>Cobertura por categoria</h2>
-              <span>{categories.length} secciones</span>
-            </div>
-            <div class="bar-list">
-              {categoryStats.map((category) => (
-                <div class="bar-row">
-                  <span>{category.name}</span>
-                  <div style={`--bar: ${Math.max(8, (category.count / Math.max(1, articles.length)) * 100)}%`}>
-                    <i></i>
-                  </div>
-                  <strong>{category.count}</strong>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section class="panel">
-            <div class="panel-head">
-              <h2>Juegos con mas piezas</h2>
-              <span>Top editorial</span>
-            </div>
-            <div class="game-list">
-              {gameStats.map(([game, count]) => (
-                <div>
-                  <strong>{game}</strong>
-                  <span>{count} articulo{count === 1 ? "" : "s"}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section class="panel wide">
-            <div class="panel-head">
-              <h2>Todos los articulos</h2>
-              <div class="panel-actions">
-                <span>Mas reciente: {latestArticle?.data.updated.toISOString().slice(0, 10)}</span>
-                <button type="button" data-restore-articles>Restaurar eliminados</button>
-              </div>
-            </div>
-            <p class="panel-note">
-              Puedes abrir, cargar en el editor o eliminar articulos de esta vista local. Para cambiar los archivos reales,
-              descarga el Markdown editado y reemplaza el archivo correspondiente en `src/content/articles`.
-            </p>
-            <div class="article-table" data-dashboard-articles></div>
-          </section>
-        </div>
+      <section class="workflow" aria-labelledby="workflow-title">
+        <h2 id="workflow-title">Flujo correcto para publicar</h2>
+        <ol>
+          <li>Entra en Pages CMS con tu cuenta conectada a GitHub.</li>
+          <li>Crea o edita un articulo en la coleccion <code>Articulos</code>.</li>
+          <li>Sube la portada a <code>public/images</code> y usa una ruta como <code>/images/portada.webp</code>.</li>
+          <li>Guarda los cambios para que GitHub reciba el commit.</li>
+          <li>Cloudflare Pages reconstruira MetaGamer y publicara la nueva version.</li>
+        </ol>
       </section>
     </div>
   </section>
-
-  <script is:inline define:vars={{ dashboardArticles, categories }}>
-    const PASSWORD = "metagamer-demo";
-    const app = document.querySelector("[data-admin-app]");
-    const loginPanel = app?.querySelector("[data-login-panel]");
-    const loginForm = app?.querySelector("[data-login-form]");
-    const loginMessage = app?.querySelector("[data-login-message]");
-    const workspace = app?.querySelector("[data-admin-workspace]");
-    const articleForm = app?.querySelector("[data-article-form]");
-    const coverFileInput = app?.querySelector("[data-cover-file]");
-    const markdownOutput = app?.querySelector("[data-markdown-output]");
-    const outputMessage = app?.querySelector("[data-output-message]");
-    const categoryNames = Object.fromEntries(categories.map((category) => [category.slug, category.name]));
-    const storageKey = "metagamer-admin-auth";
-    const deletedKey = "metagamer-admin-deleted";
-    let deletedSlugs = new Set(JSON.parse(localStorage.getItem(deletedKey) || "[]"));
-    let currentMode = "new";
-    let currentEditSlug = "";
-    let uploadedCoverPreview = "";
-    let uploadedCoverPath = "";
-
-    function setUnlocked() {
-      loginPanel?.classList.add("is-hidden");
-      workspace?.classList.remove("is-locked");
-      localStorage.setItem(storageKey, "ok");
-    }
-
-    function saveDeletedSlugs() {
-      localStorage.setItem(deletedKey, JSON.stringify([...deletedSlugs]));
-    }
-
-    function setField(name, value) {
-      const field = articleForm?.elements?.namedItem(name);
-      if (field) {
-        field.value = value ?? "";
-      }
-    }
-
-    function clearForm() {
-      currentMode = "new";
-      currentEditSlug = "";
-      uploadedCoverPreview = "";
-      uploadedCoverPath = "";
-      setField("title", "");
-      setField("description", "");
-      setField("category", "guias");
-      setField("game", "");
-      setField("platforms", "");
-      setField("tags", "");
-      setField("cover", "");
-      setField("coverFile", "");
-      setField("author", "Equipo MetaGamer");
-      setField("content", "");
-      updateEditor("Nuevo borrador limpio. Escribe el titulo para generar el archivo.");
-    }
-
-    function loadArticleForEditing(article) {
-      currentMode = "edit";
-      currentEditSlug = article.slug;
-      uploadedCoverPreview = "";
-      uploadedCoverPath = "";
-      setField("title", article.title);
-      setField("description", article.description);
-      setField("category", article.categorySlug);
-      setField("game", article.game);
-      setField("platforms", article.platforms.join(", "));
-      setField("tags", article.tags.join(", "));
-      setField("cover", article.cover);
-      setField("coverFile", "");
-      setField("author", article.author);
-      setField("content", article.content);
-      updateEditor(`Editando: ${article.slug}. Descarga el Markdown para reemplazar el archivo real.`);
-      openTab("editor");
-      articleForm?.querySelector("[name='title']")?.focus();
-    }
-
-    if (localStorage.getItem(storageKey) === "ok") {
-      setUnlocked();
-    }
-
-    loginForm?.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const data = new FormData(loginForm);
-      if (data.get("password") === PASSWORD) {
-        setUnlocked();
-        loginMessage.textContent = "";
-        return;
-      }
-      loginMessage.textContent = "Clave incorrecta para la demo.";
-    });
-
-    function listFromCsv(value) {
-      return String(value)
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean);
-    }
-
-    function slugify(value) {
-      return String(value)
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)/g, "");
-    }
-
-    function imagePathFromFile(file) {
-      const parts = file.name.split(".");
-      const ext = parts.length > 1 ? parts.pop().toLowerCase() : "png";
-      const base = slugify(parts.join(".") || "portada-articulo");
-      return `/images/${base}.${ext}`;
-    }
-
-    function normalizeCoverPath(value) {
-      const cover = String(value || "").trim();
-      if (!cover) return "";
-      if (cover.startsWith("/") || cover.startsWith("data:") || cover.startsWith("http")) return cover;
-      if (cover.startsWith("images/")) return `/${cover}`;
-      if (/\.(avif|gif|jpe?g|png|webp)$/i.test(cover)) return `/images/${cover}`;
-      return cover;
-    }
-
-    function escapeHtml(value) {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;");
-    }
-
-    function estimateReadingTime(content) {
-      const words = String(content).trim().split(/\s+/).filter(Boolean).length;
-      return `${Math.max(1, Math.ceil(words / 190))} min`;
-    }
-
-    function renderPreviewMarkdown(content) {
-      const lines = String(content).split("\n");
-      let html = "";
-      let inList = false;
-      for (const rawLine of lines) {
-        const line = rawLine.trim();
-        if (!line) {
-          if (inList) {
-            html += "</ul>";
-            inList = false;
-          }
-          continue;
-        }
-        if (line.startsWith("### ")) {
-          if (inList) {
-            html += "</ul>";
-            inList = false;
-          }
-          html += `<h4>${escapeHtml(line.slice(4))}</h4>`;
-          continue;
-        }
-        if (line.startsWith("## ")) {
-          if (inList) {
-            html += "</ul>";
-            inList = false;
-          }
-          html += `<h3>${escapeHtml(line.slice(3))}</h3>`;
-          continue;
-        }
-        if (line.startsWith("- ")) {
-          if (!inList) {
-            html += "<ul>";
-            inList = true;
-          }
-          html += `<li>${escapeHtml(line.slice(2))}</li>`;
-          continue;
-        }
-        if (inList) {
-          html += "</ul>";
-          inList = false;
-        }
-        html += `<p>${escapeHtml(line)}</p>`;
-      }
-      if (inList) {
-        html += "</ul>";
-      }
-      return html;
-    }
-
-    function quotedArray(items) {
-      return `[${items.map((item) => `"${item.replaceAll('"', '\\"')}"`).join(", ")}]`;
-    }
-
-    function getFormState() {
-      const data = new FormData(articleForm);
-      const title = String(data.get("title") || "").trim();
-      const description = String(data.get("description") || "").trim();
-      const category = String(data.get("category") || "guias");
-      const game = String(data.get("game") || "").trim();
-      const platforms = listFromCsv(data.get("platforms"));
-      const tags = listFromCsv(data.get("tags"));
-      const cover = normalizeCoverPath(uploadedCoverPath || data.get("cover") || slugify(game) || "metagamer");
-      const author = String(data.get("author") || "Equipo MetaGamer").trim();
-      const content = String(data.get("content") || "").trim();
-      const today = new Date().toISOString().slice(0, 10);
-      const slug = currentMode === "edit" && currentEditSlug ? currentEditSlug : slugify(title || game || "nuevo-articulo");
-      const readingTime = estimateReadingTime(content);
-      return { title, description, category, game, platforms, tags, cover, author, content, today, slug, readingTime };
-    }
-
-    function generateMarkdown(state) {
-      return `---\ntitle: "${state.title.replaceAll('"', '\\"')}"\ndescription: "${state.description.replaceAll('"', '\\"')}"\nslug: "${state.slug}"\ncategory: "${state.category}"\ngame: "${state.game.replaceAll('"', '\\"')}"\nplatforms: ${quotedArray(state.platforms)}\ndate: ${state.today}\nupdated: ${state.today}\nauthor: "${state.author.replaceAll('"', '\\"')}"\ncover: "${state.cover.replaceAll('"', '\\"')}"\ntags: ${quotedArray(state.tags)}\nreadingTime: "${state.readingTime}"\n---\n\n${state.content}\n`;
-    }
-
-    function updateEditor(message) {
-      const state = getFormState();
-      app.querySelector("[data-preview-category]").textContent = categoryNames[state.category] ?? state.category;
-      app.querySelector("[data-preview-title]").textContent = state.title || "Titulo del articulo";
-      app.querySelector("[data-preview-description]").textContent = state.description || "Descripcion breve para buscadores y tarjetas.";
-      app.querySelector("[data-preview-game]").textContent = state.game || "Juego";
-      app.querySelector("[data-preview-platforms]").textContent = state.platforms.join(", ") || "Plataformas";
-      app.querySelector("[data-preview-reading]").textContent = state.readingTime;
-      app.querySelector("[data-preview-tags]").innerHTML = state.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("");
-      app.querySelector("[data-preview-body]").innerHTML = renderPreviewMarkdown(state.content);
-      const previewCover = app.querySelector("[data-preview-cover]");
-      const previewCoverImg = app.querySelector("[data-preview-cover-img]");
-      const coverSource = uploadedCoverPreview || (state.cover.startsWith("/") || state.cover.startsWith("data:") || state.cover.startsWith("http") ? state.cover : "");
-      previewCover?.classList.toggle("is-hidden", !coverSource);
-      if (previewCoverImg && coverSource) {
-        previewCoverImg.src = coverSource;
-      }
-      markdownOutput.value = generateMarkdown(state);
-      outputMessage.textContent = message || `${currentMode === "edit" ? "Archivo editado" : "Archivo sugerido"}: ${state.slug}.md`;
-    }
-
-    articleForm?.addEventListener("input", () => updateEditor());
-    coverFileInput?.addEventListener("change", () => {
-      const file = coverFileInput.files?.[0];
-      if (!file) {
-        uploadedCoverPreview = "";
-        uploadedCoverPath = "";
-        updateEditor();
-        return;
-      }
-      uploadedCoverPath = imagePathFromFile(file);
-      setField("cover", uploadedCoverPath);
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        uploadedCoverPreview = String(reader.result || "");
-        updateEditor(`Portada cargada para preview. Guarda el archivo como ${uploadedCoverPath} en public/images.`);
-      });
-      reader.readAsDataURL(file);
-    });
-    app?.querySelector("[data-reset-form]")?.addEventListener("click", () => {
-      clearForm();
-    });
-
-    app?.querySelector("[data-copy-markdown]")?.addEventListener("click", async () => {
-      await navigator.clipboard.writeText(markdownOutput.value);
-      outputMessage.textContent = "Markdown copiado al portapapeles.";
-    });
-
-    app?.querySelector("[data-download-markdown]")?.addEventListener("click", () => {
-      const state = getFormState();
-      const blob = new Blob([markdownOutput.value], { type: "text/markdown;charset=utf-8" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `${state.slug}.md`;
-      link.click();
-      URL.revokeObjectURL(link.href);
-      outputMessage.textContent = `Descarga preparada: ${state.slug}.md`;
-    });
-
-    function openTab(tab) {
-      app.querySelectorAll("[data-tab-button]").forEach((item) => {
-        item.classList.toggle("is-active", item.dataset.tabButton === tab);
-      });
-      app.querySelectorAll("[data-tab-panel]").forEach((panel) => {
-        panel.classList.toggle("is-active", panel.dataset.tabPanel === tab);
-      });
-    }
-
-    app?.querySelectorAll("[data-tab-button]").forEach((button) => {
-      button.addEventListener("click", () => openTab(button.dataset.tabButton));
-    });
-
-    const articleTable = app?.querySelector("[data-dashboard-articles]");
-    if (articleTable) {
-      articleTable.innerHTML = dashboardArticles
-        .map(
-          (article) => `
-          <a href="/articulos/${article.slug}/">
-            <strong>${escapeHtml(article.title)}</strong>
-            <span>${escapeHtml(article.category)} · ${escapeHtml(article.game)}</span>
-            <small>${escapeHtml(article.updated)}</small>
-          </a>`
-        )
-        .join("");
-    }
-
-    function renderDashboardArticles() {
-      if (!articleTable) return;
-      const visibleArticles = dashboardArticles.filter((article) => !deletedSlugs.has(article.slug));
-      articleTable.innerHTML = visibleArticles
-        .map(
-          (article) => `
-          <article class="dashboard-row" data-row-slug="${escapeHtml(article.slug)}">
-            <div>
-              <strong>${escapeHtml(article.title)}</strong>
-              <span>${escapeHtml(article.category)} · ${escapeHtml(article.game)} · ${escapeHtml(article.updated)}</span>
-            </div>
-            <div class="row-actions">
-              <a href="/articulos/${article.slug}/">Ver</a>
-              <button type="button" data-edit-article="${escapeHtml(article.slug)}">Editar</button>
-              <button class="danger-button" type="button" data-delete-article="${escapeHtml(article.slug)}">Eliminar</button>
-            </div>
-          </article>`
-        )
-        .join("");
-      if (!visibleArticles.length) {
-        articleTable.innerHTML = `<p class="empty-state">No hay articulos visibles en este navegador. Puedes restaurarlos limpiando datos locales del sitio.</p>`;
-      }
-    }
-
-    articleTable?.addEventListener("click", (event) => {
-      const editButton = event.target.closest("[data-edit-article]");
-      const deleteButton = event.target.closest("[data-delete-article]");
-      if (editButton) {
-        const article = dashboardArticles.find((item) => item.slug === editButton.dataset.editArticle);
-        if (article) loadArticleForEditing(article);
-      }
-      if (deleteButton) {
-        const slug = deleteButton.dataset.deleteArticle;
-        const article = dashboardArticles.find((item) => item.slug === slug);
-        if (!slug || !article) return;
-        deletedSlugs.add(slug);
-        saveDeletedSlugs();
-        renderDashboardArticles();
-        outputMessage.textContent = `"${article.title}" eliminado del dashboard local. El archivo real no se ha borrado.`;
-      }
-    });
-
-    app?.querySelector("[data-restore-articles]")?.addEventListener("click", () => {
-      deletedSlugs.clear();
-      saveDeletedSlugs();
-      renderDashboardArticles();
-      outputMessage.textContent = "Todos los articulos vuelven a estar visibles en el dashboard local.";
-    });
-
-    renderDashboardArticles();
-    updateEditor();
-  </script>
 </BaseLayout>
 
 <style>
-  .admin-shell {
-    min-height: 100vh;
-    background: #f3f5ed;
+  .admin-security {
+    min-height: calc(100vh - 160px);
+    padding: clamp(44px, 8vw, 92px) 0;
+    background:
+      linear-gradient(135deg, rgba(185, 255, 61, 0.16), transparent 32%),
+      linear-gradient(180deg, #10141b 0%, #171912 100%);
+    color: #f7f8f2;
   }
 
-  .admin-hero,
-  .admin-workspace,
-  .login-panel {
-    width: min(1180px, calc(100% - 36px));
+  .security-inner {
+    width: min(1080px, calc(100% - 36px));
     margin: 0 auto;
   }
 
-  .admin-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 280px;
-    gap: 24px;
-    align-items: end;
-    padding: clamp(38px, 7vw, 76px) 0 24px;
-  }
-
   .eyebrow {
-    margin: 0 0 8px;
-    color: #596018;
+    margin: 0 0 10px;
+    color: #b9ff3d;
     font-size: 12px;
     font-weight: 900;
     letter-spacing: 0;
     text-transform: uppercase;
   }
 
-  .admin-hero h1,
-  .login-panel h2,
-  .form-head h2,
-  .panel h2 {
+  h1 {
+    max-width: 850px;
     margin: 0;
-    line-height: 1.02;
+    font-size: clamp(42px, 7vw, 82px);
+    line-height: 0.98;
   }
 
-  .admin-hero h1 {
+  .lead {
     max-width: 780px;
-    font-size: clamp(38px, 6vw, 72px);
+    margin: 20px 0 0;
+    color: #d9dfd0;
+    font-size: clamp(18px, 2vw, 22px);
+    line-height: 1.55;
   }
 
-  .admin-hero p:not(.eyebrow),
-  .login-panel p,
-  .panel-head span,
-  .status-card small {
-    color: #5a5f52;
-  }
-
-  .admin-hero p:not(.eyebrow) {
-    max-width: 720px;
-    margin: 16px 0 0;
-    font-size: 18px;
-  }
-
-  .status-card,
-  .cloud-publish,
-  .login-panel,
-  .article-form,
-  .preview-card,
-  .markdown-card,
-  .metric-grid article,
-  .panel {
-    border: 1px solid #d9ddce;
+  .security-notice,
+  .workflow {
+    max-width: 860px;
+    margin-top: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 8px;
-    background: #ffffff;
-    box-shadow: 0 18px 44px rgba(23, 25, 18, 0.07);
-  }
-
-  .status-card {
-    display: grid;
-    gap: 4px;
-    padding: 18px;
-  }
-
-  .status-card span,
-  .metric-grid span {
-    color: #6d725f;
-    font-size: 13px;
-    font-weight: 850;
-  }
-
-  .status-card strong {
-    font-size: 24px;
-  }
-
-  .login-panel {
-    display: grid;
-    grid-template-columns: 1fr minmax(320px, 0.65fr);
-    gap: 24px;
-    align-items: center;
-    padding: 22px;
-    margin-bottom: 24px;
-  }
-
-  .login-panel.is-hidden {
-    display: none;
-  }
-
-  .login-form,
-  .article-form,
-  .preview-column {
-    display: grid;
-    gap: 16px;
-  }
-
-  .login-form label,
-  .article-form label {
-    display: grid;
-    gap: 7px;
-    color: #2e3127;
-    font-size: 13px;
-    font-weight: 850;
-  }
-
-  .login-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 10px;
-  }
-
-  input,
-  select,
-  textarea {
-    width: 100%;
-    border: 1px solid #cdd2c2;
-    border-radius: 8px;
-    padding: 12px 13px;
-    background: #fbfcf8;
-    color: #171912;
-    font: inherit;
-  }
-
-  textarea {
-    resize: vertical;
-  }
-
-  button {
-    min-height: 43px;
-    border: 0;
-    border-radius: 8px;
-    padding: 10px 14px;
-    background: #151712;
-    color: #ffffff;
-    font: inherit;
-    font-weight: 900;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background: #2b2f23;
-  }
-
-  .ghost-button,
-  .button-row button {
-    border: 1px solid #cdd2c2;
-    background: #f5f6ee;
-    color: #191b15;
-  }
-
-  .admin-workspace {
-    padding-bottom: 72px;
-  }
-
-  .admin-workspace.is-locked {
-    display: none;
-  }
-
-  .cloud-publish {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 18px;
-    align-items: center;
-    margin-bottom: 18px;
     padding: 20px;
-    background:
-      linear-gradient(135deg, rgba(53, 227, 255, 0.14), transparent 44%),
-      #ffffff;
+    background: rgba(255, 255, 255, 0.07);
   }
 
-  .cloud-publish h2 {
+  .security-notice strong,
+  .workflow h2 {
+    display: block;
+    margin: 0 0 8px;
+    color: #ffffff;
+    font-size: 20px;
+  }
+
+  .security-notice p {
     margin: 0;
-    font-size: clamp(24px, 3vw, 34px);
-    line-height: 1.04;
+    color: #d9dfd0;
+    line-height: 1.6;
   }
 
-  .cloud-publish p {
-    max-width: 790px;
-    margin: 10px 0 0;
-    color: #555d4d;
-  }
-
-  .cloud-publish code {
-    border: 1px solid #d9ddce;
+  code {
+    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 6px;
     padding: 2px 5px;
-    background: #f5f6ee;
-    color: #191b15;
+    background: rgba(0, 0, 0, 0.25);
+    color: #ffffff;
     font-size: 0.92em;
   }
 
-  .cloud-actions {
+  .admin-links {
     display: grid;
-    gap: 10px;
-    justify-items: end;
-  }
-
-  .cloud-actions a {
-    display: inline-flex;
-    min-height: 43px;
-    align-items: center;
-    border-radius: 8px;
-    padding: 10px 14px;
-    background: #151712;
-    color: #ffffff;
-    font-weight: 900;
-  }
-
-  .cloud-actions span {
-    color: #646b5a;
-    font-size: 13px;
-    font-weight: 850;
-  }
-
-  .admin-tabs {
-    display: inline-flex;
-    gap: 4px;
-    margin: 0 0 18px;
-    padding: 4px;
-    border: 1px solid #d9ddce;
-    border-radius: 8px;
-    background: #ffffff;
-  }
-
-  .admin-tabs button {
-    background: transparent;
-    color: #575d4e;
-  }
-
-  .admin-tabs button.is-active {
-    background: #b9ff3d;
-    color: #151712;
-  }
-
-  .tab-panel {
-    display: none;
-  }
-
-  .tab-panel.is-active {
-    display: block;
-  }
-
-  .editor-grid {
-    display: grid;
-    grid-template-columns: minmax(320px, 0.86fr) minmax(360px, 1fr);
-    gap: 18px;
-    align-items: start;
-  }
-
-  .article-form,
-  .preview-card,
-  .markdown-card,
-  .panel {
-    padding: 20px;
-  }
-
-  .form-head,
-  .markdown-actions,
-  .panel-head,
-  .panel-actions {
-    display: flex;
-    justify-content: space-between;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 14px;
-    align-items: center;
+    margin-top: 28px;
   }
 
-  .panel-actions {
-    justify-content: flex-end;
-  }
-
-  .panel-actions button {
-    min-height: 36px;
-    border: 1px solid #cdd2c2;
-    background: #fbfcf8;
-    color: #191b15;
-    font-size: 13px;
-  }
-
-  .field-row {
+  .admin-links a {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-
-  .preview-card {
-    background:
-      linear-gradient(135deg, rgba(185, 255, 61, 0.2), transparent 34%),
-      #ffffff;
-  }
-
-  .preview-cover {
-    aspect-ratio: 16 / 9;
-    margin: -4px -4px 18px;
-    overflow: hidden;
-    border: 1px solid #d9ddce;
+    gap: 8px;
+    min-height: 132px;
+    align-content: start;
+    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 8px;
-    background: #11151b;
+    padding: 18px;
+    background: #f7f8f2;
+    color: #171912;
+    text-decoration: none;
   }
 
-  .preview-cover.is-hidden {
-    display: none;
+  .admin-links a:hover {
+    transform: translateY(-2px);
   }
 
-  .preview-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .preview-kicker {
-    display: inline-flex;
-    width: fit-content;
-    border-radius: 999px;
-    padding: 5px 9px;
-    background: #151712;
-    color: #b9ff3d;
-    font-size: 12px;
+  .admin-links span {
+    font-size: 20px;
     font-weight: 950;
   }
 
-  .preview-card h2 {
-    margin: 14px 0 10px;
-    font-size: clamp(28px, 4vw, 46px);
-    line-height: 1;
-  }
-
-  .preview-card p,
-  .preview-body li {
-    color: #444a3d;
-  }
-
-  .preview-meta,
-  .preview-tags,
-  .button-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .preview-meta span,
-  .preview-tags span {
-    border: 1px solid #d9ddce;
-    border-radius: 999px;
-    padding: 5px 9px;
-    background: rgba(255, 255, 255, 0.66);
-    color: #4d5345;
-    font-size: 12px;
-    font-weight: 850;
-  }
-
-  .preview-body {
-    margin-top: 22px;
-    border-top: 1px solid #d9ddce;
-    padding-top: 18px;
-  }
-
-  .preview-body h3 {
-    margin: 22px 0 8px;
-    font-size: 22px;
-  }
-
-  .preview-body h4 {
-    margin: 18px 0 6px;
-    font-size: 17px;
-  }
-
-  .markdown-card textarea {
-    min-height: 310px;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-    font-size: 13px;
-  }
-
-  .form-message {
-    min-height: 22px;
-    margin: 0;
-    color: #667018;
-    font-size: 13px;
-    font-weight: 800;
-  }
-
-  .metric-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
-    margin-bottom: 18px;
-  }
-
-  .metric-grid article {
-    display: grid;
-    gap: 6px;
-    padding: 18px;
-  }
-
-  .metric-grid strong {
-    font-size: clamp(30px, 4vw, 44px);
-    line-height: 1;
-  }
-
-  .dashboard-grid {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 18px;
-  }
-
-  .panel.wide {
-    grid-column: 1 / -1;
-  }
-
-  .panel-note {
-    margin: 8px 0 0;
-    color: #646b5a;
+  .admin-links small {
+    color: #53594b;
     font-size: 14px;
+    line-height: 1.45;
   }
 
-  .bar-list,
-  .game-list,
-  .article-table {
+  .workflow ol {
     display: grid;
     gap: 10px;
-    margin-top: 18px;
+    margin: 12px 0 0;
+    padding-left: 22px;
+    color: #d9dfd0;
+    line-height: 1.6;
   }
 
-  .bar-row {
-    display: grid;
-    grid-template-columns: 130px 1fr 34px;
-    gap: 10px;
-    align-items: center;
-    font-size: 14px;
-    font-weight: 800;
-  }
-
-  .bar-row div {
-    height: 10px;
-    border-radius: 999px;
-    background: #e8ebdf;
-    overflow: hidden;
-  }
-
-  .bar-row i {
-    display: block;
-    width: var(--bar);
-    height: 100%;
-    border-radius: inherit;
-    background: #35e3ff;
-  }
-
-  .game-list div,
-  .article-table a,
-  .dashboard-row {
-    display: grid;
-    gap: 3px;
-    border: 1px solid #e2e5da;
-    border-radius: 8px;
-    padding: 12px;
-    background: #fbfcf8;
-  }
-
-  .game-list span,
-  .article-table span,
-  .article-table small {
-    color: #646b5a;
-    font-size: 13px;
-  }
-
-  .article-table a {
-    grid-template-columns: 1fr auto;
-  }
-
-  .article-table a strong,
-  .article-table a span {
-    min-width: 0;
-  }
-
-  .article-table a span {
-    grid-column: 1;
-  }
-
-  .article-table a small {
-    grid-row: 1 / 3;
-    grid-column: 2;
-    align-self: center;
-  }
-
-  .dashboard-row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .dashboard-row strong,
-  .dashboard-row span {
-    min-width: 0;
-  }
-
-  .dashboard-row span {
-    display: block;
-    color: #646b5a;
-    font-size: 13px;
-  }
-
-  .row-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-
-  .row-actions a,
-  .row-actions button {
-    display: inline-flex;
-    min-height: 36px;
-    align-items: center;
-    border: 1px solid #cdd2c2;
-    border-radius: 8px;
-    padding: 8px 10px;
-    background: #ffffff;
-    color: #191b15;
-    font-size: 13px;
-    font-weight: 900;
-  }
-
-  .row-actions .danger-button {
-    border-color: #ffc7bd;
-    background: #fff0ed;
-    color: #9c2f20;
-  }
-
-  .empty-state {
-    margin: 0;
-    border: 1px dashed #cdd2c2;
-    border-radius: 8px;
-    padding: 18px;
-    color: #646b5a;
-    background: #fbfcf8;
-  }
-
-  :global(.dashboard-row) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 14px;
-    border: 1px solid #e2e5da;
-    border-radius: 8px;
-    padding: 12px;
-    background: #fbfcf8;
-  }
-
-  :global(.dashboard-row strong),
-  :global(.dashboard-row span) {
-    min-width: 0;
-  }
-
-  :global(.dashboard-row span) {
-    display: block;
-    color: #646b5a;
-    font-size: 13px;
-  }
-
-  :global(.row-actions) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-
-  :global(.row-actions a),
-  :global(.row-actions button) {
-    display: inline-flex;
-    min-height: 36px;
-    align-items: center;
-    border: 1px solid #cdd2c2;
-    border-radius: 8px;
-    padding: 8px 10px;
-    background: #ffffff;
-    color: #191b15;
-    font: inherit;
-    font-size: 13px;
-    font-weight: 900;
-    line-height: 1;
-  }
-
-  :global(.row-actions .danger-button) {
-    border-color: #ffc7bd;
-    background: #fff0ed;
-    color: #9c2f20;
-  }
-
-  @media (max-width: 960px) {
-    .admin-hero,
-    .login-panel,
-    .cloud-publish,
-    .editor-grid,
-    .dashboard-grid {
+  @media (max-width: 760px) {
+    .admin-links {
       grid-template-columns: 1fr;
-    }
-
-    .metric-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 620px) {
-    .login-row,
-    .field-row,
-    .metric-grid,
-    .article-table a,
-    .dashboard-row {
-      grid-template-columns: 1fr;
-    }
-
-    .form-head,
-    .markdown-actions,
-    .panel-head,
-    .panel-actions {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-
-    .bar-row {
-      grid-template-columns: 1fr;
-    }
-
-    .article-table a small {
-      grid-row: auto;
-      grid-column: auto;
-    }
-
-    .row-actions {
-      justify-content: flex-start;
-    }
-
-    .cloud-actions {
-      justify-items: start;
     }
   }
 </style>

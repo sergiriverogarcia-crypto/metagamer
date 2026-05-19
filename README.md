@@ -2,6 +2,9 @@
 
 MVP SEO de videojuegos en espanol orientado a guias, trucos, rankings y configuracion para Espana/LatAm.
 
+Produccion: https://metagamer-github.pages.dev
+Repositorio: https://github.com/sergiriverogarcia-crypto/metagamer
+
 ## Comandos
 
 ```bash
@@ -53,11 +56,18 @@ Configuracion recomendada al conectar el repositorio de GitHub en Cloudflare Pag
 
 Cloudflare Pages reconstruira la web cada vez que subas cambios a GitHub. Esto es lo que permite que un articulo creado en Pages CMS aparezca publicado despues del redeploy.
 
-## Admin local
+## Admin y seguridad
 
-`/admin/` sigue siendo un prototipo local para preparar borradores, revisar el dashboard y generar Markdown. No puede escribir archivos reales del proyecto desde el navegador porque la web es estatica.
+`/admin/` esta desactivado como editor publico de produccion. Un panel con contrasena en JavaScript no protege una web estatica, porque el codigo y la clave quedan expuestos en el navegador.
 
-Para publicar online usa Pages CMS. Para pruebas locales, descarga el Markdown del admin y colocalo manualmente en `src/content/articles`; si subes portada, guardala en `public/images` y usa una ruta como `/images/mi-portada.webp`.
+Para publicar online usa Pages CMS conectado a GitHub. Asi los cambios quedan versionados, el acceso depende de la cuenta autorizada y Cloudflare Pages redeploya la web despues de cada commit.
+
+La web incluye `public/_headers` para Cloudflare Pages con:
+
+- HSTS, `X-Content-Type-Options`, `X-Frame-Options` y `Referrer-Policy`.
+- `Content-Security-Policy` base para reducir carga de recursos externos.
+- `X-Robots-Tag` y `Cache-Control: no-store` en `/admin/*`.
+- Cache largo para assets de Astro y cache moderado para imagenes.
 
 ## Contenido
 

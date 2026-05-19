@@ -14,7 +14,7 @@ platforms:
 date: 2026-05-20
 updated: 2026-05-20
 author: Equipo MetaGamer
-cover: /images/rocket-league-guia-air-dribbling-principiantes.png
+cover: /images/rocket-league-air-dribble-portada.png
 tags:
   - rocket league
   - air dribbling
@@ -29,51 +29,6 @@ tags:
   - ranked rocket league
   - como hacer air dribble
 readingTime: 9 min
----
----
-
-title: "Rocket League: guía de air dribbling para principiantes"
-
-description: "Guía completa de air dribbling en Rocket League para principiantes: aprende a subir el balón por la pared, controlar el coche en el aire, usar boost y entrenar paso a paso."
-
-slug: rocket-league-guia-air-dribbling-principiantes
-
-category: guias
-
-game: Rocket League
-
-platforms:
-
-- PC
-- PlayStation
-- Xbox
-- Nintendo Switch
-
-date: 2026-05-20
-
-updated: 2026-05-20
-
-author: Equipo MetaGamer
-
-cover: /images/rocket-league-air-dribble-portada.png
-
-tags:
-
-- rocket league
-- air dribbling
-- air dribble rocket league
-- guia rocket league
-- guia air dribble
-- air dribble principiantes
-- mecanicas rocket league
-- entrenamiento rocket league
-- aerial rocket league
-- boost rocket league
-- ranked rocket league
-- como hacer air dribble
-
-readingTime: 9 min
-
 ---
 
 ## Punto de partida

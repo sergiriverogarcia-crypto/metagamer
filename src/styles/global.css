@@ -660,12 +660,16 @@ svg {
 
 .article-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.58fr);
-  gap: clamp(28px, 5vw, 64px);
+  grid-template-columns: 1fr;
+  gap: clamp(24px, 4vw, 38px);
   width: min(var(--max), calc(100% - 36px));
   margin: 0 auto;
   padding: clamp(46px, 7vw, 84px) 0 36px;
-  align-items: center;
+  align-items: start;
+}
+
+.article-hero-copy {
+  max-width: 860px;
 }
 
 .article-hero h1 {
@@ -677,7 +681,7 @@ svg {
 }
 
 .article-hero p {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 0 20px;
   color: var(--ink-soft);
   font-size: 19px;
@@ -691,7 +695,7 @@ svg {
 }
 
 .article-hero-art .cover-art {
-  min-height: 330px;
+  min-height: clamp(300px, 48vw, 560px);
 }
 
 .article-body {

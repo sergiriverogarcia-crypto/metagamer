@@ -356,7 +356,7 @@ svg {
 
 .article-card.featured {
   grid-column: span 2;
-  grid-template-columns: minmax(260px, 0.92fr) 1fr;
+  grid-template-columns: minmax(390px, 1.35fr) minmax(240px, 0.65fr);
 }
 
 .card-media {
@@ -367,7 +367,7 @@ svg {
 }
 
 .article-card.featured .card-media {
-  min-height: 310px;
+  min-height: 300px;
 }
 
 .cover-art {
@@ -493,6 +493,11 @@ svg {
   padding: 20px;
 }
 
+.article-card.featured .card-copy {
+  min-width: 0;
+  padding: 18px;
+}
+
 .meta-row,
 .article-meta {
   display: flex;
@@ -524,6 +529,12 @@ svg {
   font-weight: 950;
 }
 
+.article-card.featured h3 {
+  margin: 10px 0 8px;
+  font-size: clamp(23px, 1.45vw, 27px);
+  line-height: 1.04;
+}
+
 .article-card h3 a:hover {
   color: #0b7180;
 }
@@ -533,12 +544,21 @@ svg {
   color: var(--ink-soft);
 }
 
+.article-card.featured p {
+  font-size: 15px;
+  line-height: 1.55;
+}
+
 .tag-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: auto;
   padding-top: 18px;
+}
+
+.article-card.featured .tag-row {
+  padding-top: 14px;
 }
 
 .tag-row span {

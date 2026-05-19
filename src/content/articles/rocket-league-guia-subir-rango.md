@@ -43,17 +43,11 @@ Antes de entrenar mecánicas, conviene revisar la configuración. Unos malos aju
 Ajustes de cámara recomendados como punto de partida:
 
 - FOV: 110
-
 - Distancia: 260 - 280
-
 - Altura: 90 - 110
-
 - Ángulo: -3.00 a -5.00
-
 - Rigidez: 0.35 - 0.55
-
 - Velocidad de cámara: 4.00 - 5.50
-
 - Velocidad de transición: 1.20 - 1.50
 
 No hace falta copiar exactamente los ajustes de un profesional. Lo importante es tener una cámara amplia, cómoda y estable para ver bien el balón, los rivales y tus compañeros.
@@ -65,17 +59,11 @@ Si quieres subir de rango rápido, no intentes aprender todas las mecánicas a l
 Prioridades principales:
 
 - Golpear el balón con fuerza y dirección.
-
 - Defender sin lanzarte a lo loco.
-
 - Rotar después de cada jugada.
-
 - No gastar todo el boost sin motivo.
-
 - Saber cuándo atacar y cuándo esperar.
-
 - Evitar dobles commits con tu compañero.
-
 - Fallar menos balones fáciles.
 
 En rangos medios, muchas partidas se ganan simplemente cometiendo menos errores que el rival.
@@ -89,13 +77,9 @@ Una buena decisión no siempre es tocar el balón. A veces lo mejor es esperar, 
 Antes de ir a por el balón, pregúntate:
 
 - ¿Tengo mejor posición que mi compañero?
-
 - ¿Puedo llegar antes que el rival?
-
 - ¿Tengo boost suficiente?
-
 - ¿Si fallo, dejamos la portería libre?
-
 - ¿Mi toque va a crear peligro o solo regalar el balón?
 
 Si no tienes una respuesta clara, normalmente es mejor posicionarte antes que lanzarte.
@@ -107,13 +91,9 @@ La rotación es una de las claves para subir de rango. Rotar significa cambiar t
 En partidos de 2v2, una rotación básica sería:
 
 1. Un jugador presiona el balón.
-
 2. El otro jugador cubre detrás.
-
 3. Si el primero falla o termina la jugada, se retira.
-
 4. El segundo entra a disputar.
-
 5. El primero vuelve por detrás y recupera boost.
 
 La idea es que nunca ataquen los dos jugadores a la vez sin cobertura. Si ambos van al mismo balón, cualquier rebote puede convertirse en gol del rival.
@@ -125,13 +105,9 @@ El boost no sirve solo para correr más. Sirve para llegar antes, defender mejor
 Errores comunes con el boost:
 
 - Gastarlo todo para perseguir un balón perdido.
-
 - Ir siempre a por el boost grande y abandonar la jugada.
-
 - No recoger pequeños pads del suelo.
-
 - Defender con cero boost por mala gestión.
-
 - Usar boost cuando podrías mantener velocidad con flips.
 
 Consejo clave: aprende a moverte recogiendo pads pequeños. No siempre necesitas el boost grande de 100. Con 24, 36 o 48 de boost puedes defender, saltar y mantener presión si estás bien colocado.
@@ -143,21 +119,13 @@ No necesitas saber hacer flip resets para subir a rangos altos. Antes de entrena
 Mecánicas prioritarias:
 
 - Half flip.
-
 - Fast aerial.
-
 - Power shots.
-
 - Clears fuertes desde defensa.
-
 - Control básico del balón.
-
 - Recuperaciones rápidas.
-
 - Wave dash simple.
-
 - Dribbling básico.
-
 - Shadow defense.
 
 Estas mecánicas te dan más control y reducen errores. Cuando las domines, podrás empezar a entrenar jugadas más avanzadas como air dribbles, double taps o flip resets.
@@ -193,17 +161,11 @@ En Diamante muchos jugadores ya saben volar, tirar fuerte y hacer algunas mecán
 Para subir de Diamante a Campeón:
 
 - No saltes a todos los balones aéreos.
-
 - No fuerces jugadas si estás incómodo.
-
 - Defiende más cerca de la portería cuando sea necesario.
-
 - No regales la posesión con despejes sin sentido.
-
 - Mira la posición de tu compañero antes de entrar.
-
 - Aprende a perder tiempo cuando tu equipo está mal colocado.
-
 - No te pongas nervioso si el rival presiona.
 
 En Diamante se pierden muchas partidas por errores evitables. Si juegas más seguro y eliges mejor cuándo arriesgar, vas a notar mejora.
@@ -213,19 +175,12 @@ En Diamante se pierden muchas partidas por errores evitables. Si juegas más seg
 Estos son los fallos que más frenan el progreso:
 
 - Ir siempre al balón sin mirar al compañero.
-
 - Defender desde dentro de la portería sin presión.
-
 - Saltar tarde a los aerials.
-
 - Hacer clears al centro del campo.
-
 - Gastar boost para jugadas que no crean peligro.
-
 - Enfadarte después de un gol y jugar peor.
-
 - Cambiar de cámara o controles cada día.
-
 - Jugar demasiadas ranked sin entrenar.
 
 Subir de rango no consiste en jugar perfecto. Consiste en reducir los errores que se repiten partida tras partida.
@@ -259,13 +214,9 @@ El mejor consejo para subir de rango en Rocket League es revisar tus errores. De
 Preguntas útiles:
 
 - ¿Me coloqué mal en algún gol?
-
 - ¿Fui a un balón que era de mi compañero?
-
 - ¿Gasté boost sin necesidad?
-
 - ¿Regalé la posesión?
-
 - ¿Me puse nervioso después de fallar?
 
 Si corriges un error cada pocos días, tu nivel subirá de forma constante.

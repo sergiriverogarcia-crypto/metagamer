@@ -356,7 +356,6 @@ svg {
 
 .article-card.featured {
   grid-column: span 2;
-  grid-template-columns: minmax(390px, 1.35fr) minmax(240px, 0.65fr);
 }
 
 .card-media {
@@ -367,7 +366,7 @@ svg {
 }
 
 .article-card.featured .card-media {
-  min-height: 300px;
+  min-height: 420px;
 }
 
 .cover-art {
@@ -495,7 +494,7 @@ svg {
 
 .article-card.featured .card-copy {
   min-width: 0;
-  padding: 18px;
+  padding: 24px;
 }
 
 .meta-row,
@@ -530,9 +529,9 @@ svg {
 }
 
 .article-card.featured h3 {
-  margin: 10px 0 8px;
-  font-size: clamp(23px, 1.45vw, 27px);
-  line-height: 1.04;
+  margin: 12px 0 10px;
+  font-size: clamp(28px, 2.15vw, 36px);
+  line-height: 1.02;
 }
 
 .article-card h3 a:hover {
@@ -545,7 +544,8 @@ svg {
 }
 
 .article-card.featured p {
-  font-size: 15px;
+  max-width: 680px;
+  font-size: 16px;
   line-height: 1.55;
 }
 

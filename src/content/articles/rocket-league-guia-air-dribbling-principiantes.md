@@ -14,7 +14,7 @@ platforms:
 date: 2026-05-20
 updated: 2026-05-20
 author: Equipo MetaGamer
-cover: /images/rocket-league-air-dribble-portada.png
+cover: /images/rocket-league-guia-air-dribbling-principiantes-1.png
 tags:
   - rocket league
   - air dribbling
@@ -30,7 +30,6 @@ tags:
   - como hacer air dribble
 readingTime: 9 min
 ---
-
 ## Punto de partida
 
 El air dribbling es una de las mecánicas más llamativas y útiles de Rocket League. Consiste en llevar el balón por el aire con varios toques controlados mientras avanzas hacia la portería rival. Bien ejecutado, sirve para superar defensores, mantener la posesión y crear jugadas muy peligrosas.

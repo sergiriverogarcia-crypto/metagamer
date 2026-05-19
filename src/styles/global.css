@@ -417,6 +417,10 @@ svg {
   object-fit: cover;
 }
 
+.cover-art.cover-contain img {
+  object-fit: contain;
+}
+
 .cover-art.cover-image::before {
   background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent 54%);
   mask-image: none;

@@ -2,9 +2,10 @@
 interface Props {
   variant: string;
   title: string;
+  contain?: boolean;
 }
 
-const { variant, title } = Astro.props;
+const { variant, title, contain = false } = Astro.props;
 const imageExtension = /\.(avif|gif|jpe?g|png|webp)$/i;
 const cleanVariant = variant.trim();
 const imageSrc = (() => {
@@ -27,7 +28,7 @@ const isImage = Boolean(imageSrc);
 
 {
   isImage ? (
-    <div class="cover-art cover-image" aria-hidden="true">
+    <div class:list={["cover-art", "cover-image", { "cover-contain": contain }]} aria-hidden="true">
       <img src={imageSrc} alt="" loading="lazy" />
       <span class="cover-title">{title}</span>
     </div>

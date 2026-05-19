@@ -1,0 +1,107 @@
+media:
+  - name: images
+    label: Imagenes
+    input: public/images
+    output: /images
+    extensions: [png, jpg, jpeg, webp]
+    rename: safe
+
+content:
+  - name: articles
+    label: Articulos
+    type: collection
+    path: src/content/articles
+    format: yaml-frontmatter
+    filename:
+      template: "{slug}.md"
+      field: create
+    view:
+      primary: title
+      fields: [title, category, game, updated]
+      sort: [updated, date, title, category, game]
+      search: [title, description, game, tags, body]
+      default:
+        sort: updated
+        order: desc
+    fields:
+      - name: title
+        label: Titulo
+        type: string
+        required: true
+        options:
+          maxlength: 120
+      - name: description
+        label: Descripcion SEO
+        type: text
+        required: true
+        options:
+          maxlength: 180
+      - name: slug
+        label: Slug URL
+        type: string
+        required: true
+      - name: category
+        label: Categoria
+        type: select
+        required: true
+        options:
+          values:
+            - name: guias
+              label: Guias
+            - name: trucos
+              label: Trucos
+            - name: rankings
+              label: Rankings
+            - name: configuracion
+              label: Configuracion
+            - name: noticias-utiles
+              label: Noticias utiles
+      - name: game
+        label: Juego
+        type: string
+        required: true
+      - name: platforms
+        label: Plataformas
+        type: string
+        list: true
+        required: true
+      - name: date
+        label: Fecha de publicacion
+        type: date
+        required: true
+      - name: updated
+        label: Ultima actualizacion
+        type: date
+        required: true
+      - name: author
+        label: Autor
+        type: string
+        required: true
+      - name: cover
+        label: Portada
+        type: image
+        required: true
+        options:
+          media: images
+          path: public/images
+          extensions: [png, jpg, jpeg, webp]
+          rename: safe
+      - name: tags
+        label: Tags
+        type: string
+        list: true
+        required: true
+      - name: readingTime
+        label: Tiempo de lectura
+        type: string
+        required: true
+      - name: body
+        label: Contenido
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          media: images
+          path: public/images
+          rename: safe
+          switcher: true

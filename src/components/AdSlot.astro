@@ -1,0 +1,13 @@
+---
+interface Props {
+  label?: string;
+  compact?: boolean;
+}
+
+const { label = "Espacio reservado para anuncio", compact = false } = Astro.props;
+---
+
+<aside class:list={["ad-slot", { compact }]} aria-label={label}>
+  <span>{label}</span>
+  <small>AdSense se activará cuando exista publisher ID aprobado.</small>
+</aside>

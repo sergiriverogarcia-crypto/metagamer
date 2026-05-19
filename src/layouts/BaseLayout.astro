@@ -1,0 +1,69 @@
+---
+import { SITE, categories } from "@/data/site";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = SITE.name,
+  description = SITE.description,
+  canonical = Astro.url.pathname,
+  noindex = false
+} = Astro.props;
+
+const pageTitle = title === SITE.name ? title : `${title} | ${SITE.name}`;
+const canonicalUrl = new URL(canonical, SITE.url).toString();
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,follow" />}
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="MetaGamer inicio">
+        <span class="brand-mark">MG</span>
+        <span>MetaGamer</span>
+      </a>
+      <nav aria-label="Navegación principal">
+        <a href="/">Inicio</a>
+        {categories.map((category) => (
+          <a href={`/categoria/${category.slug}/`}>{category.name}</a>
+        ))}
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div>
+        <strong>MetaGamer</strong>
+        <p>Guías originales, claras y actualizadas para jugar con mejor criterio.</p>
+      </div>
+      <nav aria-label="Páginas legales">
+        <a href="/sobre-nosotros/">Sobre nosotros</a>
+        <a href="/contacto/">Contacto</a>
+        <a href="/privacidad/">Privacidad</a>
+        <a href="/cookies/">Cookies</a>
+        <a href="/terminos/">Términos</a>
+      </nav>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+---
+import CoverArt from "./CoverArt.astro";
+import { articleSlug, formatDate } from "@/utils/articles";
+import { getCategory } from "@/data/site";
+import type { Article } from "@/utils/articles";
+
+interface Props {
+  article: Article;
+  featured?: boolean;
+}
+
+const { article, featured = false } = Astro.props;
+const category = getCategory(article.data.category);
+const slug = articleSlug(article);
+---
+
+<article class:list={["article-card", { featured }]}>
+  <a class="card-media" href={`/articulos/${slug}/`} aria-label={article.data.title}>
+    <CoverArt variant={article.data.cover} title={article.data.game} />
+  </a>
+  <div class="card-copy">
+    <div class="meta-row">
+      <a href={`/categoria/${article.data.category}/`}>{category?.name}</a>
+      <span>{formatDate(article.data.updated)}</span>
+      <span>{article.data.readingTime}</span>
+    </div>
+    <h3><a href={`/articulos/${slug}/`}>{article.data.title}</a></h3>
+    <p>{article.data.description}</p>
+    <div class="tag-row">
+      {article.data.tags.slice(0, 3).map((tag) => <span>{tag}</span>)}
+    </div>
+  </div>
+</article>

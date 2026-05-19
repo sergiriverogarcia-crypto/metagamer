@@ -1,0 +1,43 @@
+---
+interface Props {
+  variant: string;
+  title: string;
+}
+
+const { variant, title } = Astro.props;
+const imageExtension = /\.(avif|gif|jpe?g|png|webp)$/i;
+const cleanVariant = variant.trim();
+const imageSrc = (() => {
+  if (cleanVariant.startsWith("/") || cleanVariant.startsWith("data:") || cleanVariant.startsWith("http")) {
+    return cleanVariant;
+  }
+
+  if (cleanVariant.startsWith("images/")) {
+    return `/${cleanVariant}`;
+  }
+
+  if (imageExtension.test(cleanVariant)) {
+    return `/images/${cleanVariant}`;
+  }
+
+  return "";
+})();
+const isImage = Boolean(imageSrc);
+---
+
+{
+  isImage ? (
+    <div class="cover-art cover-image" aria-hidden="true">
+      <img src={imageSrc} alt="" loading="lazy" />
+      <span class="cover-title">{title}</span>
+    </div>
+  ) : (
+    <div class={`cover-art cover-${variant}`} aria-hidden="true">
+      <div class="cover-device">
+        <span class="cover-device-line"></span>
+        <span class="cover-device-dot"></span>
+      </div>
+      <span class="cover-title">{title}</span>
+    </div>
+  )
+}

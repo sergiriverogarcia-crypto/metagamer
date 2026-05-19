@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.codex/
+.wrangler/
+.env
+.env.local
+/hooter.png

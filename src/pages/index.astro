@@ -1,0 +1,91 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ArticleCard from "@/components/ArticleCard.astro";
+import AdSlot from "@/components/AdSlot.astro";
+import { categories } from "@/data/site";
+import { articleSlug, sortByUpdated } from "@/utils/articles";
+
+const articles = sortByUpdated(await getCollection("articles"));
+const featured = articles[0];
+const latest = articles.slice(1, 7);
+const trending = articles.slice(0, 4);
+---
+
+<BaseLayout title="MetaGamer" description="Guías, trucos, rankings y ajustes de videojuegos en español para jugar mejor sin perder tiempo.">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1>Guías claras para jugar mejor desde la primera partida.</h1>
+        <p>
+          MetaGamer reúne rutas, ajustes, trucos seguros y rankings útiles para jugadores de España y LatAm.
+          Sin relleno, sin descargas dudosas y con contenido actualizado.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="/categoria/guias/">Ver guías</a>
+          <a class="button-secondary" href="/categoria/configuracion/">Optimizar juegos</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Guías destacadas">
+        <header>
+          <span>Últimas actualizaciones</span>
+          <span>MetaGamer</span>
+        </header>
+        <div class="trend-list">
+          {trending.map((article, index) => (
+            <a href={`/articulos/${articleSlug(article)}/`}>
+              <strong>{String(index + 1).padStart(2, "0")}</strong>
+              <span>{article.data.game}</span>
+              <small>{article.data.readingTime}</small>
+            </a>
+          ))}
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-tight">
+    <div class="section-header">
+      <div>
+        <h2>Destacado</h2>
+        <p>La guía más reciente abre la portada con lectura rápida, contexto y rutas claras.</p>
+      </div>
+      <a class="button" href="/categoria/guias/">Explorar más</a>
+    </div>
+    <div class="grid">
+      <ArticleCard article={featured} featured />
+      {latest.slice(0, 1).map((article) => <ArticleCard article={article} />)}
+    </div>
+  </section>
+
+  <AdSlot />
+
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2>Categorías</h2>
+        <p>Organización pensada para búsquedas reales: resolver una duda, elegir mejor o configurar rápido.</p>
+      </div>
+    </div>
+    <div class="category-strip">
+      {categories.map((category) => (
+        <a class="category-tile" href={`/categoria/${category.slug}/`}>
+          <strong>{category.name}</strong>
+          <p>{category.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section-muted">
+    <div class="section-header">
+      <div>
+        <h2>Más guías recientes</h2>
+        <p>Contenido evergreen para crecer en SEO sin depender solo de noticias del día.</p>
+      </div>
+    </div>
+    <div class="grid">
+      {articles.slice(2, 11).map((article) => <ArticleCard article={article} />)}
+    </div>
+  </section>
+</BaseLayout>

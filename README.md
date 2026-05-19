@@ -98,4 +98,8 @@ Contenido original del articulo.
 
 ## AdSense
 
-El proyecto incluye placeholders visuales mediante el componente `AdSlot`, pero no carga codigo real de AdSense. Cuando la cuenta este aprobada, sustituye el placeholder por el script oficial usando el publisher ID correspondiente.
+El componente `AdSlot` no muestra placeholders publicos por defecto. Cuando la cuenta este aprobada, se puede activar el script oficial usando el publisher ID correspondiente.
+
+## Analitica
+
+GA4 esta preparado de forma condicional. Para activarlo en Cloudflare Pages, crea la variable de entorno `PUBLIC_GA4_ID` con el valor de Google Analytics, por ejemplo `G-XXXXXXXXXX`, y redeploya la web.

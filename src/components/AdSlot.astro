@@ -5,9 +5,7 @@ interface Props {
 }
 
 const { label = "Espacio reservado para anuncio", compact = false } = Astro.props;
+const showPlaceholder = import.meta.env.PUBLIC_SHOW_AD_PLACEHOLDERS === "true";
 ---
 
-<aside class:list={["ad-slot", { compact }]} aria-label={label}>
-  <span>{label}</span>
-  <small>AdSense se activará cuando exista publisher ID aprobado.</small>
-</aside>
+{showPlaceholder && <aside class:list={["ad-slot", { compact }]} aria-label={label} hidden />}

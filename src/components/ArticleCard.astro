@@ -16,7 +16,7 @@ const slug = articleSlug(article);
 
 <article class:list={["article-card", { featured }]}>
   <a class="card-media" href={`/articulos/${slug}/`} aria-label={article.data.title}>
-    <CoverArt variant={article.data.cover} title={article.data.game} contain={featured} />
+    <CoverArt variant={article.data.cover} title={article.data.game} />
   </a>
   <div class="card-copy">
     <div class="meta-row">
